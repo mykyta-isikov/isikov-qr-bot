@@ -3,6 +3,36 @@ const TelegramBot = require('node-telegram-bot-api')
 const TOKEN = '1759647109:AAFuRJPze16vsCTVfg7b-DBb9Bmf2_-VY4g'
 const ISOstring = ' !"#$%&\'()*+,-.0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~@/'
 
+function checkInput(input) {
+  let flag = true
+  Array.from(input).forEach(char => {
+    let sw = false
+    Array.from(ISOstring).forEach(element => {
+      if(char == element) {
+        sw = true
+      }
+    })
+    if(sw == false) {
+      flag = false
+    } 
+  })
+  return flag  
+}
+
+function sendQRCode(id, input) {
+  const validInput = encodeURIComponent(input)
+  const png_url = `http://api.qrserver.com/v1/create-qr-code/?data=${validInput}`
+
+  bot.sendPhoto(id, png_url, {
+    caption: "✅Your message successfully encoded!"
+  })
+  .then(() => {})
+  .catch((error) => {
+    bot.sendMessage(id, "❌Oops... Something went wrong during conversion")
+    console.log(error)
+  })
+}
+
 const bot = new TelegramBot(TOKEN, {polling: true})
 
 console.log('Bot is running...')
@@ -34,37 +64,3 @@ bot.onText(/\/make (.+)/, (msg, [raw, text]) => {
       "Please, check out /info for more details")
   }
 })
-
-  
-
-  function checkInput(input) {
-    let flag = true
-    Array.from(input).forEach(char => {
-      let sw = false
-      Array.from(ISOstring).forEach(element => {
-        if(char == element) {
-          sw = true
-        }
-      })
-      if(sw == false) {
-        flag = false
-      } 
-    })
-    return flag  
-  }
-
-  function sendQRCode(id, input) {
-    const validInput = encodeURIComponent(input)
-    const png_url = `http://api.qrserver.com/v1/create-qr-code/?data=${validInput}`
-
-    bot.sendPhoto(id, png_url, {
-      caption: "✅Your message successfully encoded!"
-    })
-    .then(() => {})
-    .catch((error) => {
-      bot.sendMessage(id, "❌Oops... Something went wrong during conversion")
-      console.log(error)
-    })
-  }
-
-
