@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "dotenv": "^10.0.0",
     "node-telegram-bot-api": "^0.53.0"
   },
   "devDependencies": {
