@@ -1,7 +1,29 @@
 const TelegramBot = require('node-telegram-bot-api')
+const express = require('express')
+const Router = require('express')
+
+const app = express()
 
 const TOKEN = '1759647109:AAFuRJPze16vsCTVfg7b-DBb9Bmf2_-VY4g'
+const bot = new TelegramBot(TOKEN)
+
 const ISOstring = ' !"#$%&\'()*+,-.0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~@/'
+
+bot.setWebHook('https://isikov-qr-bot.herokuapp.com/bot')
+
+const router = Router()
+router.post('/bot', (req) => {
+  bot.processUpdate(req)
+  req.status = 200
+})
+
+app.use(express.urlencoded({extended: true}))
+app.use(router)
+
+const PORT = process.env.PORT || 4000
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`App is listaning on port ${PORT}`)
+})
 
 function checkInput(input) {
   let flag = true
@@ -32,8 +54,6 @@ function sendQRCode(id, input) {
     console.log(error)
   })
 }
-
-const bot = new TelegramBot(TOKEN, {polling: true})
 
 console.log('Bot is running...')
 
