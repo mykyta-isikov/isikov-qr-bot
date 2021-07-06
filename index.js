@@ -2,14 +2,22 @@ const TelegramBot = require('node-telegram-bot-api')
 const express = require('express')
 const Router = require('express')
 
-const app = express()
+//const app = express()
 
+const PORT = process.env.PORT || 4000
 const TOKEN = '1759647109:AAFuRJPze16vsCTVfg7b-DBb9Bmf2_-VY4g'
-const bot = new TelegramBot(TOKEN)
+const URL = 'https://isikov-qr-bot.herokuapp.com/bot'
+const bot = new TelegramBot(TOKEN, {
+  webHook: {
+    port: PORT
+  }
+})
+
+bot.setWebHook(`${URL}/bot${TOKEN}`)
+
 
 const ISOstring = ' !"#$%&\'()*+,-.0123456789:;<=>?ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~@/'
-
-bot.setWebHook('https://isikov-qr-bot.herokuapp.com/bot')
+/*
 
 const router = Router()
 router.post('/bot', (req) => {
@@ -20,10 +28,10 @@ router.post('/bot', (req) => {
 app.use(express.urlencoded({extended: true}))
 app.use(router)
 
-const PORT = process.env.PORT || 4000
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`App is listaning on port ${PORT}`)
 })
+*/
 
 function checkInput(input) {
   let flag = true
