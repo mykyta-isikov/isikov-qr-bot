@@ -23,10 +23,10 @@ function sendQRCode(id, input) {
   const validInput = encodeURIComponent(input)
   const png_url = `http://api.qrserver.com/v1/create-qr-code/?data=${validInput}`
 
-  bot.sendPhoto(id, png_url, {
-    caption: "✅Your message successfully encoded!"
+  bot.sendPhoto(id, png_url)
+  .then(() => {
+    bot.sendMessage(id, "✅Your message was successfully encoded!")
   })
-  .then(() => {})
   .catch((error) => {
     bot.sendMessage(id, "❌Oops... Something went wrong during conversion")
     console.log(error)
